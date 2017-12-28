@@ -17,12 +17,12 @@ use Shell\Output\ProcessOutputInterface;
  */
 class Process
 {
-    const STDIN  = 0;
+    const STDIN = 0;
     const STDOUT = 1;
     const STDERR = 2;
 
     const ERR_COMPLETED = 17;
-    const ERR_RUNNING   = 20;
+    const ERR_RUNNING = 20;
 
     /**
      * Stream mode - reads wait until data available.
@@ -49,9 +49,9 @@ class Process
      * @var array
      */
     protected $descriptorspec = [
-        self::STDIN  => ['pipe', 'r'],
-        self::STDOUT => ['pipe', 'w'],
-        self::STDERR => ['pipe', 'w'],
+        static::STDIN => ['pipe', 'r'],
+        static::STDOUT => ['pipe', 'w'],
+        static::STDERR => ['pipe', 'w'],
     ];
 
     /**
@@ -334,7 +334,7 @@ class Process
      * @return Process
      * @throws ProcessException
      */
-    public function runAsync($blocking = self::NON_BLOCKING)
+    public function runAsync($blocking = static::NON_BLOCKING)
     {
         if ($this->running) {
             throw new \RuntimeException('Process already running.');
@@ -361,7 +361,7 @@ class Process
      * @return Process
      * @throws ProcessException
      */
-    public function run($timeout = -1, $blocking = self::NON_BLOCKING)
+    public function run($timeout = -1, $blocking = static::NON_BLOCKING)
     {
         if ($this->running) {
             throw new \RuntimeException('Process already running.');
@@ -389,7 +389,7 @@ class Process
      * @return Process
      * @throws ProcessException
      */
-    public function runInteractive($blocking = self::NON_BLOCKING)
+    public function runInteractive($blocking = static::NON_BLOCKING)
     {
         if ($this->running) {
             throw new \RuntimeException('Process already running.');
@@ -687,7 +687,7 @@ class Process
      *
      * @throws ProcessException
      */
-    private function exec($interactive = false, $blocking = self::NON_BLOCKING)
+    private function exec($interactive = false, $blocking = static::NON_BLOCKING)
     {
         $this->validate();
 
