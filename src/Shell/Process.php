@@ -581,12 +581,16 @@ class Process
         $write   = [];
         $except  = [];
 
-        if (isset($this->pipes[static::STDOUT])) {
+        if (isset($this->pipes[static::STDOUT]) && isset($this->readStreamStatus[static::STDOUT]) && !$this->readStreamStatus[static::STDOUT]) {
             $read[static::STDOUT] = $this->pipes[static::STDOUT];
         }
 
-        if (isset($this->pipes[static::STDERR])) {
+        if (isset($this->pipes[static::STDERR]) && isset($this->readStreamStatus[static::STDERR]) && !$this->readStreamStatus[static::STDERR]) {
             $read[static::STDERR] = $this->pipes[static::STDERR];
+        }
+
+        if (empty($read + $write + $except)) {
+            return;
         }
 
         $numChangedStreams = stream_select($read, $write, $except, 0);
@@ -597,10 +601,6 @@ class Process
         if ($numChangedStreams > 0) {
             $pipes = $read + $write + $except;
             foreach ($pipes as $id => $pipe) {
-                if (isset($this->readStreamStatus[$id]) && !$this->readStreamStatus[$id]) {
-                    continue;
-                }
-
                 $streams[$id] = $this->readStream($id);
             }
         }
